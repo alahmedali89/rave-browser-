@@ -1,0 +1,478 @@
+<resources>
+    <string name="app_name">Apex Browser</string>
+
+    <!-- Material 3 App Bar & Address Field -->
+    <string name="address_bar_hint">Search or type web address</string>
+    <string name="cd_reload_page">Reload page</string>
+    <string name="cd_clear_input">Clear input</string>
+    <string name="cd_https_secure">HTTPS encrypted connection</string>
+    <string name="cd_open_settings">Open Settings</string>
+    <string name="cd_navigate_back">Navigate back</string>
+    <string name="cd_swipe_next_tab">Switch to next tab</string>
+    <string name="cd_swipe_previous_tab">Switch to previous tab</string>
+    <string name="cd_page_info">Page info and site settings</string>
+    <string name="status_no_internet_connection">No internet connection</string>
+    <string name="status_back_online">Back online</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_bookmarks">Bookmarks</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_tabs">Tabs</string>
+    <string name="nav_menu">Menu</string>
+    <string name="cd_open_menu">Open browser menu</string>
+    <string name="fab_new_tab">New Tab</string>
+
+    <!-- Home Page -->
+    <string name="home_search_placeholder">Search %1$s or type a URL</string>
+    <string name="home_bookmarks_section">Bookmarks</string>
+    <string name="home_bookmarks_manage">Manage</string>
+    <string name="home_fresh_bookmarks_title">No Shortcuts Pinned Yet</string>
+    <string name="home_fresh_bookmarks_hint">Bookmark any webpage from the bottom bar to pin it to your Home screen.</string>
+
+    <!-- Dedicated Search Screen -->
+    <string name="search_screen_hint">Search %1$s or enter URL</string>
+    <string name="search_suggestions_header">Suggestions</string>
+    <string name="search_recent_header">Recent Searches</string>
+    <string name="search_clear_history">Clear All</string>
+    <string name="search_fresh_empty_title">Ready to Search</string>
+    <string name="search_fresh_empty_subtitle">Type a query for live %1$s suggestions or enter any web address. You can change your default search engine in Settings.</string>
+    <string name="cd_fill_suggestion">Copy suggestion to search box</string>
+    <string name="cd_remove_history_item">Remove from search history</string>
+    <string name="cd_close_search">Close search</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_search_engines_title">Search Engine</string>
+    <string name="settings_privacy_section">Privacy &amp; Safety</string>
+    <string name="settings_shields_title">Ad &amp; Tracker Blocker</string>
+    <string name="settings_https_title">HTTPS-Only Upgrade</string>
+    <string name="settings_script_guard_title">Strict Script Guard</string>
+    <string name="settings_browsing_section">Browsing</string>
+    <string name="settings_preload_title">Smart Link Preloading</string>
+    <string name="settings_desktop_title">Desktop Site Viewport</string>
+    <string name="settings_appearance_section">Appearance</string>
+    <string name="settings_theme_mode_label">Theme</string>
+    <string name="settings_dynamic_color_title">Dynamic System Color</string>
+    <string name="settings_seed_palette_label">Color Palette</string>
+    <string name="settings_home_wallpaper_label">Home Wallpaper</string>
+    <string name="settings_wallpaper_pick_phone">Choose Photo from Phone</string>
+    <string name="settings_wallpaper_change_phone">Change Phone Photo</string>
+    <string name="settings_wallpaper_bw_filter">Black &amp; White Filter</string>
+    <string name="settings_wallpaper_bw_filter_desc">Apply monochrome tone to your home wallpaper</string>
+    <string name="settings_wallpaper_preview_online">Fresh wallpaper on every new home tab</string>
+    <string name="settings_wallpaper_preview_phone_set">Custom photo from phone</string>
+    <string name="settings_wallpaper_preview_phone_empty">Tap to choose a photo from your phone</string>
+    <string name="settings_wallpaper_preview_bw">Solid Black &amp; White Canvas</string>
+    <string name="cd_refresh_home_wallpaper">Load new home wallpaper</string>
+    <string name="settings_clear_data_button">Clear Browsing Data</string>
+    <string name="settings_data_cleared_notice">Search history and browsing data cleared</string>
+
+    <!-- Bookmarks -->
+    <string name="bookmarks_screen_title">Bookmarks</string>
+    <string name="bookmarks_empty_title">No Bookmarks Yet</string>
+    <string name="bookmarks_empty_subtitle">Visit any website and tap Bookmarks on the bottom bar to save it here.</string>
+    <string name="cd_delete_bookmark">Remove bookmark</string>
+    <string name="action_view_bookmarks">View</string>
+
+    <!-- Tab Switcher & Tab Groups -->
+    <string name="tabs_pill_tabs">Tabs</string>
+    <string name="tabs_pill_groups">Groups</string>
+    <string name="tabs_action_add_tab">Add Tab</string>
+    <string name="tabs_action_new_group">Group</string>
+    <string name="tabs_groups_empty_title">No Tab Groups Yet</string>
+    <string name="tabs_groups_empty_subtitle">Drag one tab onto another or tap Group in the center pill below to bundle tabs together.</string>
+    <string name="tabs_sheet_title">Tabs &amp; Groups</string>
+    <string name="tabs_drag_subtitle">Drag any tab onto another to create a group</string>
+    <string name="tabs_close_all">Reset</string>
+    <string name="cd_close_tab">Close tab</string>
+    <string name="action_undo">Undo</string>
+    <string name="tab_closed_snackbar_message">Closed \"%1$s\"</string>
+    <string name="cd_drag_tab">Drag tab to group</string>
+    <string name="tab_group_drop_hint">Drop to Group</string>
+    <string name="tab_group_drop_ungroup_hint">Drop here to remove from group</string>
+    <string name="tab_group_drag_out_subtitle">Drag a tab here or outside card to ungroup</string>
+    <string name="tab_group_add_tab">Add Tab to Group</string>
+    <string name="tab_group_ungroup">Ungroup</string>
+    <string name="tab_group_ungroup_all">Ungroup All</string>
+    <string name="tab_group_edit_title">Rename &amp; Group Color</string>
+    <string name="tab_group_name_label">Group name</string>
+    <string name="tab_group_name_placeholder">Enter group name</string>
+    <string name="tab_group_color_label">Group &amp; tab color</string>
+    <string name="action_save">Save</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="cd_edit_group">Rename and choose group color</string>
+    <string name="cd_cycle_tab_color">Change tab color</string>
+    <string name="cd_add_tab_in_group">New tab in group</string>
+
+    <!-- Automation Extensions -->
+    <string name="automation_panel_title">Apex Extensions</string>
+    <string name="ext_nano_title">Nano Agents</string>
+    <string name="ext_retriever_title">Retriever</string>
+    <string name="nano_input_hint">Describe a browser task for Planner, Navigator &amp; Validator…</string>
+    <string name="nano_run_action">Run</string>
+    <string name="retriever_capture_tab">Capture Page</string>
+    <string name="retriever_parallel_tabs">Run Across All Tabs</string>
+    <string name="retriever_rule_hint">Extraction prompt or CSS selector (e.g., product names and prices)</string>
+    <string name="retriever_save_rule">Save Rule</string>
+
+    <!-- Hamburger Menu Bottom Sheet -->
+    <string name="menu_sheet_title">Browser Menu</string>
+    <string name="menu_action_back">Back</string>
+    <string name="menu_action_forward">Forward</string>
+    <string name="menu_action_share">Share</string>
+    <string name="menu_action_refresh">Refresh</string>
+    <string name="menu_bookmark_page">Bookmark page</string>
+    <string name="menu_bookmarked_subtitle">Saved in your bookmarks</string>
+    <string name="menu_find_in_page">Find in page</string>
+    <string name="menu_desktop_site">Desktop site</string>
+    <string name="menu_toggle_on">On</string>
+    <string name="menu_toggle_off">Off</string>
+    <string name="menu_automation_title">Automation</string>
+    <string name="menu_automation_subtitle">Run workflows &amp; inspect page</string>
+    <string name="menu_automation_open_hud">Open Automation HUD</string>
+    <string name="menu_automation_open_workspace">Automation Workspace</string>
+    <string name="menu_more_title">More</string>
+    <string name="menu_bookmarks">Bookmarks</string>
+    <string name="menu_sign_in">Apex Pro</string>
+    <string name="menu_sign_in_subtitle">5 free daily automation plays • Upgrade for unlimited</string>
+    <string name="menu_pro_active_subtitle">Unlimited automation plays unlocked</string>
+    <string name="menu_pro_free_subtitle_format">%1$d of %2$d free automation plays left today</string>
+    <string name="menu_pro_badge">PRO</string>
+    <string name="menu_pro_left_badge_format">%1$d/%2$d left</string>
+    <string name="menu_appearance">Appearance</string>
+    <string name="menu_default_promo_title">Make Apex Browser your default</string>
+    <string name="menu_default_promo_subtitle">Fast, private, and made for you.</string>
+    <string name="cd_dismiss_default_promo">Dismiss default browser prompt</string>
+    <string name="sync_backup_dialog_title">Apex Pro Subscription</string>
+    <string name="sync_backup_dialog_message">Free plan includes 5 automation plays per day. Choose a Month, Week, or Day pass and activate your key for unlimited automation.</string>
+    <string name="pro_dialog_title_active">Apex Pro Active</string>
+    <string name="pro_dialog_subtitle_active">Unlimited automation plays, batch replays, and Nano tasks are unlocked for the duration of your selected pass.</string>
+    <string name="pro_plan_free_format">Free Plan • %1$d/%2$d plays left today</string>
+    <string name="pro_plan_active_label">Pro Plan • Unlimited daily plays</string>
+    <string name="pro_packages_section_title">Choose Pass Duration</string>
+    <string name="pro_package_month_title">Monthly Pass</string>
+    <string name="pro_package_month_desc">Unlimited automation plays • Valid for 30 days</string>
+    <string name="pro_package_week_title">Weekly Pass</string>
+    <string name="pro_package_week_desc">Unlimited automation plays • Valid for 7 days</string>
+    <string name="pro_package_day_title">Daily Pass</string>
+    <string name="pro_package_day_desc">Unlimited automation plays • Valid for 1 day</string>
+    <string name="pro_package_best_value">Base Plan</string>
+    <string name="pro_author_contact_email">support@apexbrowser.app</string>
+    <string name="pro_contact_author_button">Contact Author</string>
+    <string name="pro_copy_author_email">Copy author email</string>
+    <string name="pro_author_email_copied">Author email copied</string>
+    <string name="pro_activation_key_label">Activation Key</string>
+    <string name="pro_activation_key_hint">Paste key from author</string>
+    <string name="pro_paste_key_action">Paste key</string>
+    <string name="pro_activate_button">Activate Pro</string>
+    <string name="pro_deactivate_button">Deactivate Key</string>
+    <string name="pro_quota_pill_format">%1$d/%2$d free left</string>
+    <string name="pro_quota_exhausted_badge">5/5 daily used</string>
+    <string name="pro_cd_back">Back to browser</string>
+    <string name="cd_expand_automation">Expand automation actions</string>
+    <string name="cd_expand_more">Expand more menu options</string>
+    <string name="find_in_page_hint">Find in page…</string>
+    <string name="find_in_page_matches_format">%1$d/%2$d</string>
+    <string name="cd_find_previous">Previous match</string>
+    <string name="cd_find_next">Next match</string>
+    <string name="cd_close_find_in_page">Close find in page</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_new_tab">New Tab</string>
+    <string name="menu_reload_page">Reload Page</string>
+    <string name="menu_desktop_mode">Desktop Viewport</string>
+    <string name="menu_clear_data">Clear Browsing Data</string>
+    <string name="cancel">Cancel</string>
+    <string name="remove">Remove</string>
+
+    <!-- Top Visits / Shortcuts -->
+    <string name="home_search_placeholder_clean">Search or type URL</string>
+    <string name="home_top_visits_title">Top Visits</string>
+    <string name="settings_top_visits_title">Show Bookmarks &amp; Top Visits</string>
+    <string name="home_add_top_visit">Add</string>
+    <string name="dialog_add_top_visit_title">Add Shortcut</string>
+    <string name="dialog_top_visit_name_label">Name</string>
+    <string name="dialog_top_visit_name_hint">e.g. YouTube</string>
+    <string name="dialog_top_visit_url_label">URL</string>
+    <string name="dialog_top_visit_url_hint">e.g. https://youtube.com</string>
+    <string name="dialog_add_button">Add</string>
+    <string name="cd_remove_top_visit">Remove shortcut</string>
+    <string name="action_share">Share</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_edit">Edit</string>
+    <string name="clipboard_copied_link_title">Link you copied</string>
+    <string name="clipboard_copied_text_title">Text you copied</string>
+    <string name="notice_link_copied">Link copied to clipboard</string>
+
+    <!-- Browsing History Screen & Menu -->
+    <string name="menu_history">History</string>
+    <string name="menu_history_subtitle">Browse chronological timeline &amp; site activity</string>
+    <string name="history_screen_title">History</string>
+    <string name="history_search_hint">Search history by title, URL, or domain…</string>
+    <string name="history_empty_title">No Browsing History Yet</string>
+    <string name="history_empty_subtitle">Websites you visit in standard tabs will appear here chronologically with detailed site analytics.</string>
+    <string name="history_clear_button">Clear</string>
+    <string name="history_clear_dialog_title">Clear Browsing History</string>
+    <string name="history_clear_dialog_subtitle">Select the time range of browsing history you want to remove:</string>
+    <string name="cd_delete_history_visit">Remove visit from history</string>
+    <string name="cd_inspect_history_visit">Inspect visit details</string>
+
+    <!-- Fast Downloads Screen & Menu -->
+    <string name="menu_downloads">Downloads</string>
+    <string name="menu_downloads_subtitle">8× turbo multi-stream download manager</string>
+    <string name="downloads_screen_title">Downloads</string>
+    <string name="downloads_search_hint">Search downloads by file name or domain…</string>
+    <string name="downloads_empty_title">No Downloads Yet</string>
+    <string name="downloads_empty_subtitle">Files, documents, media, and archives you download from websites will appear here with 8× parallel acceleration.</string>
+    <string name="downloads_new_button">New Download</string>
+    <string name="downloads_clear_button">Clear</string>
+    <string name="downloads_new_dialog_title">Start Fast Download</string>
+    <string name="downloads_new_dialog_subtitle">Enter a direct file URL to download using the 8× parallel Turbo stream engine.</string>
+    <string name="downloads_url_input_hint">https://example.com/file.pdf</string>
+    <string name="downloads_filename_input_hint">Optional custom file name</string>
+    <string name="downloads_start_action">Download Now</string>
+    <string name="cd_inspect_download_item">Inspect download details</string>
+    <string name="cd_delete_download_item">Delete download item</string>
+    <string name="cd_pause_resume_download">Pause or resume download</string>
+    <string name="cd_open_download_item">Open downloaded file</string>
+    <string name="downloads_metric_completed">Completed</string>
+    <string name="downloads_metric_used_space">Used of Total</string>
+    <string name="downloads_open_file_action">Open File</string>
+    <string name="downloads_open_app_action">Open / Install App</string>
+    <string name="downloads_open_file_subtitle">Launch using a compatible system or installed viewer</string>
+    <string name="downloads_open_failed_missing">Downloaded file could not be found on device</string>
+    <string name="downloads_open_failed_no_viewer">No app available to open this file type</string>
+
+    <!-- Bookmarks Import & Export -->
+    <string name="bookmarks_import_button">Import</string>
+    <string name="bookmarks_export_button">Export</string>
+    <string name="bookmarks_import_dialog_title">Import Bookmarks</string>
+    <string name="bookmarks_import_dialog_subtitle">Select a bookmarks file (.html or .json) from your device or paste HTML / JSON / URLs below.</string>
+    <string name="bookmarks_export_dialog_title">Export Bookmarks</string>
+    <string name="bookmarks_export_dialog_subtitle">Export your saved bookmarks as a standard Netscape HTML file or JSON backup.</string>
+    <string name="bookmarks_choose_file">Choose File (.html / .json)</string>
+    <string name="bookmarks_save_html_file">Export as HTML File (.html)</string>
+    <string name="bookmarks_save_json_file">Export as JSON File (.json)</string>
+    <string name="bookmarks_copy_html">Copy HTML to Clipboard</string>
+    <string name="bookmarks_share_export">Share Bookmarks</string>
+    <string name="bookmarks_import_confirm">Import</string>
+
+    <!-- Incognito Tab Mode -->
+    <string name="menu_new_incognito_tab">New Incognito Tab</string>
+    <string name="menu_new_incognito_subtitle">Browse without saving history, cookies, or site data</string>
+    <string name="incognito_badge_label">Incognito</string>
+    <string name="incognito_home_title">Incognito Mode Active</string>
+    <string name="incognito_home_subtitle">Apex Browser will not save your browsing history, search queries, cookies, or site data after you close all Incognito tabs.</string>
+    <string name="incognito_end_session_button">Close All Incognito Tabs &amp; Wipe Data</string>
+    <string name="tabs_pill_incognito">Incognito</string>
+    <string name="tabs_action_incognito">Incognito</string>
+    <string name="tabs_incognito_empty_title">No Incognito Tabs Open</string>
+    <string name="tabs_incognito_empty_subtitle">Open an Incognito tab to browse privately. History, cookies, and site data are automatically wiped when the session ends.</string>
+
+    <!-- Tab Switcher Bottom 3-Dots Menu & Top Icon -->
+    <string name="cd_reset_all_tabs">Close all tabs</string>
+    <string name="cd_tab_switcher_more_options">More options</string>
+    <string name="tabs_menu_close_all">Close all tabs</string>
+    <string name="tabs_menu_close_all_private">Close all private tabs</string>
+    <string name="tabs_all_empty_title">No Regular Tabs Open</string>
+    <string name="tabs_all_empty_subtitle">Open a new tab or switch to your Incognito tabs above.</string>
+    <string name="tabs_menu_delete_browsing_data">Delete browsing data</string>
+    <string name="tabs_menu_select_tab">Select tab</string>
+    <string name="tabs_menu_settings">Settings</string>
+    <string name="tabs_menu_new_tab_group">New tab group</string>
+    <string name="tabs_menu_new_tab">New tab</string>
+    <string name="tabs_menu_new_private_tab">New private tab</string>
+    <string name="tabs_menu_close_tab">Close tab</string>
+
+    <!-- Dedicated Password Manager (Material 3 Expressive) -->
+    <string name="menu_passwords">Passwords</string>
+    <string name="passwords_screen_title">Passwords</string>
+    <string name="passwords_search_hint">Search vault by site, domain, or username…</string>
+    <string name="passwords_tab_vault">Vault</string>
+    <string name="passwords_tab_generator">Generator</string>
+    <string name="passwords_tab_audit">Audit</string>
+    <string name="passwords_add_button">Add</string>
+    <string name="passwords_empty_title">Your Encrypted Vault Is Empty</string>
+    <string name="passwords_empty_subtitle">Save logins automatically while browsing or tap Add to store credentials secured with Android Keystore AES-256 encryption.</string>
+    <string name="passwords_pinned_section">Pinned Logins</string>
+    <string name="passwords_all_section">Saved Logins</string>
+    <string name="passwords_autofill_title">Auto-Save &amp; Fill Logins</string>
+    <string name="passwords_autofill_desc">Offer to save credentials and 1-tap fill saved logins on websites</string>
+    <string name="passwords_import_csv">Import CSV</string>
+    <string name="passwords_export_csv">Export CSV</string>
+    <string name="passwords_clear_vault">Clear Vault</string>
+    <string name="passwords_generator_title">Password Generator</string>
+    <string name="passwords_audit_title">Security Health</string>
+    <string name="passwords_save_prompt_title">Save password to Apex Vault?</string>
+    <string name="passwords_update_prompt_title">Update saved password?</string>
+    <string name="passwords_fill_action">Fill</string>
+    <string name="cd_toggle_password_visibility">Toggle password visibility</string>
+    <string name="cd_copy_username">Copy username</string>
+    <string name="cd_copy_password">Copy password</string>
+    <string name="cd_favorite_password">Pin or unpin login</string>
+    <string name="cd_regenerate_password">Generate new password</string>
+
+    <!-- Default Browser Integration -->
+    <string name="menu_set_default_browser">Set as Default Browser</string>
+    <string name="menu_set_default_browser_subtitle">Open all web links directly in Apex Browser</string>
+    <string name="settings_default_browser_title">Default Browser App</string>
+    <string name="settings_default_browser_apex_selected">Apex Browser is selected as your default browser</string>
+    <string name="settings_default_browser_other_selected">Currently selected: %1$s</string>
+    <string name="settings_default_browser_none_selected">No default browser selected • Tap to choose</string>
+    <string name="settings_default_browser_badge_default">Default</string>
+
+    <!-- Download Status Bar Notifications -->
+    <string name="notification_channel_downloads_name">Downloads</string>
+    <string name="notification_channel_downloads_desc">Live progress and status for active and completed file downloads</string>
+
+    <!-- Accessibility Settings -->
+    <string name="settings_accessibility_section">Accessibility</string>
+    <string name="accessibility_default_zoom_title">Default zoom</string>
+    <string name="accessibility_default_zoom_desc">Make text and images larger or smaller for all sites that you visit</string>
+    <string name="accessibility_zoom_percent_format">%1$d %%</string>
+    <string name="cd_accessibility_zoom_out">Decrease default zoom</string>
+    <string name="cd_accessibility_zoom_in">Increase default zoom</string>
+    <string name="cd_accessibility_help">Accessibility help</string>
+    <string name="accessibility_preview_label">Preview</string>
+    <string name="accessibility_preview_headline">The Wonderful Wizard of Oz</string>
+    <string name="accessibility_preview_chapter">Chapter 11: The Wonderful Emerald City of Oz</string>
+    <string name="accessibility_preview_body">Even with eyes protected by the green spectacles, Dorothy and her friends were at first dazzled by the</string>
+    <string name="accessibility_saved_zoom_title">Saved zoom for sites</string>
+    <string name="accessibility_show_zoom_menu_title">Show zoom option in main menu</string>
+    <string name="accessibility_show_zoom_menu_desc">Make it easier to customise zoom for different sites</string>
+    <string name="accessibility_force_zoom_title">Force enable zoom</string>
+    <string name="accessibility_force_zoom_desc">Override a website\u2019s request to prevent zooming in</string>
+    <string name="accessibility_simplified_view_title">Simplified view for web pages</string>
+    <string name="accessibility_simplified_view_desc">Get notified when an article can be shown in simplified view</string>
+    <string name="accessibility_caret_browsing_title">Navigate pages with a text cursor when a keyboard is attached</string>
+    <string name="accessibility_caret_browsing_desc">To turn caret browsing on or off, use the shortcut F7</string>
+    <string name="accessibility_captions_title">Captions</string>
+    <string name="accessibility_touchpad_swipe_title">Swipe between pages using a touchpad</string>
+    <string name="accessibility_touchpad_swipe_desc">Navigate back and forth by swiping with two fingers on the touchpad</string>
+
+    <!-- Accessibility Dialogs & Browser Controls -->
+    <string name="accessibility_help_title">Accessibility Help</string>
+    <string name="accessibility_help_body">Adjust Default zoom to scale web text and page elements across sites. Enable Show zoom option in main menu to customize zoom levels for individual websites, use Force enable zoom to unlock pinch-to-zoom on restricted pages, press F7 on an attached keyboard to toggle caret browsing, or enable Simplified view for distraction-free reading on articles.</string>
+    <string name="accessibility_saved_zoom_empty_title">No site-specific zooms saved</string>
+    <string name="accessibility_saved_zoom_empty_desc">Enable \"Show zoom option in main menu\" and adjust zoom while visiting any site to save a custom zoom level for that domain.</string>
+    <string name="accessibility_saved_zoom_clear_all">Reset All</string>
+    <string name="accessibility_captions_unavailable">System caption settings are unavailable on this device</string>
+    <string name="accessibility_simplified_banner_title">Simplified view available</string>
+    <string name="accessibility_simplified_banner_action">View</string>
+    <string name="accessibility_simplified_exit">Exit simplified view</string>
+    <string name="menu_zoom_title">Zoom</string>
+    <string name="menu_zoom_reset">Reset</string>
+    <string name="action_close">Close</string>
+
+    <!-- Automation HUD, Toolbar, Workspace & Settings -->
+    <string name="settings_automations_section">Automations</string>
+    <string name="cd_toolbar_automation">Open Apex Automation HUD</string>
+    <string name="automation_hud_title">Apex Automation</string>
+    <string name="automation_hud_close">Close Automation HUD</string>
+    <string name="automation_hud_expand">Expand HUD</string>
+    <string name="automation_hud_collapse">Collapse HUD</string>
+    <string name="automation_hud_minimize">Minimize</string>
+    <string name="automation_mode_record">Record</string>
+    <string name="automation_mode_instructions">Instructions</string>
+    <string name="automation_scan_page">Scan Page</string>
+    <string name="automation_scanning">Scanning page…</string>
+    <string name="automation_view_elements">View Detected Elements</string>
+    <string name="automation_detected_count">%1$d detected</string>
+    <string name="automation_quick_saved">Saved Automations</string>
+    <string name="automation_quick_create">Create Automation</string>
+    <string name="automation_quick_recent">Recent Executions</string>
+    <string name="automation_open_workspace">Open Automation Workspace</string>
+    <string name="automation_workspace_title">Automations</string>
+    <string name="automation_search_hint">Search automations</string>
+    <string name="automation_instructions_placeholder">Tell Apex what you want to automate…</string>
+    <string name="automation_add_instructions">Add Instructions</string>
+    <string name="automation_clear">Clear</string>
+    <string name="automation_review_steps">Review Steps</string>
+    <string name="automation_execute">Execute</string>
+    <string name="automation_save">Save Automation</string>
+    <string name="automation_discard">Discard</string>
+    <string name="automation_pause">Pause</string>
+    <string name="automation_resume">Resume</string>
+    <string name="automation_stop">Stop</string>
+    <string name="automation_rename">Rename</string>
+    <string name="automation_duplicate">Duplicate</string>
+    <string name="automation_delete">Delete</string>
+    <string name="automation_run">Run</string>
+    <string name="automation_edit">Edit</string>
+    <string name="automation_add_step">Add Step</string>
+    <string name="automation_empty_title">No Automations Created Yet</string>
+    <string name="automation_empty_subtitle">Record browser actions or write natural-language instructions from the toolbar to build reusable workflows.</string>
+
+    <!-- Phase 8 Workflow Lifecycle, Versioning, Portability & Validation -->
+    <string name="automation_validate">Validate</string>
+    <string name="automation_dry_run">Dry-Run</string>
+    <string name="automation_versions">Versions</string>
+    <string name="automation_organize">Organize</string>
+    <string name="automation_archive">Archive</string>
+    <string name="automation_restore_archive">Restore Workflow</string>
+    <string name="automation_export_package">Export Package</string>
+    <string name="automation_import_package">Import Package</string>
+    <string name="automation_favorite_toggle">Toggle favorite</string>
+    <string name="automation_archived_badge">Archived</string>
+    <string name="automation_archived_notice">This workflow is archived and blocked from execution until restored.</string>
+
+    <!-- Downloads Settings Sub-screen & Save Dialog -->
+    <string name="settings_downloads_section">Downloads</string>
+    <string name="settings_download_location_title">Download location</string>
+    <string name="settings_download_location_app_external">Downloads</string>
+    <string name="settings_download_location_app_internal">Private storage</string>
+    <string name="settings_download_location_custom">Custom folder</string>
+    <string name="settings_download_location_choose_folder">Choose folder…</string>
+    <string name="settings_download_location_dialog_title">Download location</string>
+    <string name="settings_ask_where_to_save_title">Ask where to save files</string>
+    <string name="settings_auto_open_downloads_title">Automatically open when possible</string>
+    <string name="settings_download_notifications_title">Show download progress notifications</string>
+    <string name="settings_parallel_downloading_title">Parallel downloading</string>
+    <string name="settings_parallel_downloading_desc">Enable parallel downloading to accelerate download speed</string>
+    <string name="download_save_dialog_title">Download file</string>
+    <string name="download_save_filename_label">File name</string>
+    <string name="download_save_location_label">Save to</string>
+    <string name="download_save_always_ask_toggle">Ask where to save files every time</string>
+    <string name="download_save_confirm_action">Download</string>
+    <string name="cd_close_settings">Close settings</string>
+    <string name="automation_live_bar_open_hud">Open automation details</string>
+    <string name="automation_live_bar_dismiss">Dismiss automation status</string>
+    <string name="automation_replay">Replay</string>
+    <string name="automation_vault_title">Automation Vault</string>
+    <string name="automation_vault_subtitle">Passwords, email, phone &amp; reusable values</string>
+    <string name="automation_vault_search_hint">Search folders, files &amp; values…</string>
+    <string name="automation_vault_add">Add Value</string>
+    <string name="automation_vault_upload">Upload Files</string>
+    <string name="automation_vault_fab_add">Add</string>
+    <string name="automation_vault_fab_add_subtitle">Create folder</string>
+    <string name="automation_vault_fab_upload">Upload</string>
+    <string name="automation_vault_fab_upload_subtitle">Upload folder</string>
+    <string name="automation_vault_new_folder">New Folder</string>
+    <string name="automation_vault_folders_title">Folders</string>
+    <string name="automation_vault_create_folder_title">Create Folder</string>
+    <string name="automation_vault_rename_folder_title">Rename Folder</string>
+    <string name="automation_vault_folder_name_label">Folder name</string>
+    <string name="automation_vault_folder_empty_title">Folder Is Empty</string>
+    <string name="automation_vault_folder_empty_subtitle">Tap the + button to upload files or add encrypted values into this folder.</string>
+    <string name="automation_vault_empty_title">Automation Vault Is Empty</string>
+    <string name="automation_vault_empty_subtitle">Grab values automatically during a recording, upload a file, or add passwords, email, phone numbers, and form details here to reuse across every replay.</string>
+    <string name="automation_vault_generate_title">Auto-Generate</string>
+    <string name="automation_vault_generate_button">Generate</string>
+    <string name="automation_vault_copy_generated">Copy generated value</string>
+    <string name="automation_vault_change_generator_type">Change generated value type</string>
+
+    <!-- Multi-Replay, Clear Data & Vault Pool Exhaustion -->
+    <string name="automation_pre_play_title">Start Automation Replay</string>
+    <string name="automation_repeat_runs_label">Repeat runs</string>
+    <string name="automation_custom_repeat_label">Custom repeat count (1–500)</string>
+    <string name="automation_clear_data_after_replay_title">Clear browser data after every replay</string>
+    <string name="automation_clear_data_after_replay_subtitle">Wipe cookies, storage &amp; cache between runs</string>
+    <string name="automation_start_replay">Start Replay</string>
+    <string name="automation_replay_settings_title">Replay &amp; Data Settings</string>
+    <string name="automation_save_replay_settings">Save Replay Settings</string>
+    <string name="automation_add_clear_data">+ Clear Data</string>
+    <string name="automation_vault_exhausted_title">Automation Vault Values Finished</string>
+    <string name="automation_vault_exhausted_generate_action">Generate %1$d &amp; Resume</string>
+    <string name="automation_vault_exhausted_open_vault">Open Vault to Add Data</string>
+    <string name="automation_field_only_pool_hint">Field target recorded — fills dynamically from Vault pool on replay</string>
+</resources>

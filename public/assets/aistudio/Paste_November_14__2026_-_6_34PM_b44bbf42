@@ -1,0 +1,851 @@
+APEX BROWSER — PHASE 4B
+
+Secure Credential Vault & Authorized Credential-Based Automation
+
+PROJECT CONTEXT
+
+You are working on Apex Browser, an Android browser built using Kotlin, Jetpack Compose, Material 3, Android WebView, Room, ViewModel, and Repository architecture.
+
+GitHub repository:
+https://github.com/alahmedali89/Apex-Browsers
+
+Apex has an existing browser automation system with two modes:
+
+1. Record & Replay: Records website interactions and replays them later.
+2. Manual Instructions: Allows users to create automation workflows using manually defined instructions.
+
+The automation engine must remain deterministic and operate locally without requiring an external AI API at runtime.
+
+COMPLETED IMPLEMENTATION PHASES
+
+The following phases have already been implemented and must be preserved:
+
+- Phase 1: Database integrity and migration safety.
+- Phase 2: Automation execution safety.
+- Phase 3: Navigation synchronization.
+- Phase 4A: Recording isolation and origin security.
+
+The Phase 4A implementation reportedly includes:
+
+- Recording sessions bound to a session ID, initiating tab ID, and canonical origin.
+- Native validation of callbacks against the active session, tab, WebView instance, live URL origin, and event sequence.
+- Strict origin normalization and validation.
+- Cross-origin navigation isolation.
+- Same-origin and SPA navigation support.
+- Recorder cleanup during tab closure, WebView replacement, reset, and lifecycle destruction.
+- Password input values excluded from recording.
+- Idempotent recorder installation and teardown.
+- Recording HUD states for active, paused, error, and cancelled.
+- Tests reportedly passing: 72/72.
+- Debug APK reportedly building successfully.
+
+These are existing implementation claims. Inspect the actual source code and verify them before relying on them.
+
+---
+
+PRIMARY OBJECTIVE
+
+Implement Phase 4B: Secure Credential Vault & Authorized Credential-Based Automation.
+
+Currently, Phase 4A prevents password values from being recorded. However, users still need a secure way to provide credentials when replaying workflows that contain login or other authentication forms.
+
+We need to introduce a secure, locally stored credential vault that allows users to save credentials themselves, associate them with website origins, and explicitly authorize automation to use those credentials during replay.
+
+The credential vault must be independent of the automation workflow database.
+
+The automation workflow must never contain a plaintext password.
+
+The browser must never collect, extract, or save passwords without the user's explicit action.
+
+This feature must work without external AI APIs.
+
+---
+
+IMPORTANT DEVELOPMENT RULES
+
+Before writing or modifying code:
+
+1. Inspect the complete existing automation architecture.
+2. Inspect the current database schema and migrations.
+3. Inspect the existing AutomationEngine.
+4. Inspect BrowserViewModel and its execution lifecycle.
+5. Inspect WebViewViewport and JavaScript bridge communication.
+6. Inspect workflow models, repositories, step serialization, and export/import functionality.
+7. Inspect Phase 4A recording isolation and origin-validation implementation.
+8. Identify existing authentication, biometric, encryption, and security dependencies.
+9. Identify the actual minSdk, targetSdk, and supported Android versions.
+10. Identify existing tests and project conventions.
+
+Do not assume the previous implementation report is completely accurate.
+
+Do not create duplicate managers, repositories, bridges, or execution engines if equivalent components already exist.
+
+Extend existing architecture wherever appropriate.
+
+Do not rewrite the entire automation engine.
+
+Do not redesign unrelated browser screens.
+
+Preserve the existing Apex Material 3 Expressive design system.
+
+Do not remove or weaken any Phase 1–4A security protections.
+
+Do not modify unrelated browser features.
+
+Do not introduce unnecessary dependencies.
+
+If a requirement conflicts with the existing architecture, explain the conflict and propose the smallest safe architectural change before implementing it.
+
+---
+
+PART 1 — SECURE CREDENTIAL VAULT ARCHITECTURE
+
+Create a dedicated credential management architecture.
+
+Suggested components, subject to the existing project structure:
+
+- CredentialVaultManager
+- CredentialVaultRepository
+- CredentialVaultDao
+- CredentialVaultEntity
+- CredentialVaultCrypto
+- CredentialAuthenticationManager
+- CredentialFillCoordinator
+
+Do not blindly create all these classes if equivalent components already exist.
+
+1.1 Storage separation
+
+Credentials must be stored separately from automation workflows.
+
+Automation workflows should store only credential references.
+
+Example conceptual relationship:
+
+Credential Vault:
+
+- Credential ID
+- Website origin
+- Encrypted username
+- Encrypted password
+- Creation timestamp
+- Last updated timestamp
+- Optional display label
+- Optional user-defined username identifier
+
+Automation Workflow:
+
+- Workflow ID
+- Step ID
+- Credential reference ID
+- Field role
+- Website origin binding
+
+Never store plaintext credentials in:
+
+- AutomationStep
+- WorkflowEntity
+- ExecutionHistory
+- Room workflow records
+- JSON workflow exports
+- Debug logs
+- Error messages
+- Analytics
+- Crash reports
+- Screenshots
+- Recorder event payloads
+
+Do not place credentials inside workflow descriptions, notes, labels, or metadata.
+
+1.2 Database design
+
+Design a dedicated credential storage entity.
+
+The database should contain encrypted credential payloads, not plaintext secrets.
+
+Use stable credential IDs.
+
+Use appropriate database constraints and indexes.
+
+Ensure deletion and update operations are transactional where required.
+
+Do not store the encryption key in Room, DataStore, SharedPreferences, source code, or ordinary application files.
+
+Avoid destructive database migrations.
+
+If an existing migration is needed, implement an explicit migration.
+
+Do not silently delete existing user data.
+
+---
+
+PART 2 — ANDROID KEYSTORE ENCRYPTION
+
+Implement secure local encryption using Android Keystore.
+
+2.1 Encryption requirements
+
+Use an authenticated encryption design, preferably AES-GCM with a suitable authentication tag.
+
+The encryption key must be generated and protected using Android Keystore.
+
+Requirements:
+
+- Never hardcode encryption keys.
+- Never store raw encryption keys in application storage.
+- Never store encryption keys in Room.
+- Never transmit credentials to external servers.
+- Never use Base64 encoding as a substitute for encryption.
+- Never use custom or invented cryptographic algorithms.
+- Use secure random IVs/nonces.
+- Store the IV and ciphertext in an appropriate format.
+- Authenticate the encrypted payload during decryption.
+- Handle corrupted ciphertext and authentication failures safely.
+- Do not silently replace an invalid key with a new key and pretend existing credentials remain recoverable.
+
+Inspect Android version support before choosing implementation details.
+
+2.2 Key lifecycle
+
+Implement safe handling for:
+
+- First vault initialization.
+- Existing vault access.
+- Key invalidation.
+- App data clearing.
+- Reinstallation.
+- Device lock changes.
+- Biometric enrollment changes, if authentication-bound keys are used.
+- Backup and restore behavior.
+- Encryption/decryption failures.
+
+If credentials become unrecoverable, clearly inform the user.
+
+Never silently erase the vault.
+
+Provide a safe recovery path where technically possible.
+
+2.3 Authentication policy
+
+Inspect the available Android APIs and existing project dependencies.
+
+Use Android BiometricPrompt with device credential authentication where appropriate.
+
+Support devices without biometric hardware through an appropriate device-credential fallback.
+
+Consider two security levels:
+
+1. Vault access authentication.
+2. Authentication required before an individual credential is revealed or used.
+
+Do not assume that every device supports StrongBox or biometric authentication.
+
+Do not make the entire application unusable on devices without biometric hardware.
+
+The vault must have a clear and consistent authentication policy.
+
+If the key is configured to require user authentication, ensure the encryption/decryption flow correctly handles authentication and key validity.
+
+Do not weaken key security merely to make an implementation easier.
+
+---
+
+PART 3 — CREDENTIAL MANAGEMENT UI
+
+Add a dedicated Credential Vault interface inside the existing Apex browser settings or automation workspace.
+
+Follow the current Apex design language.
+
+Do not create a generic redesign.
+
+3.1 Vault screen
+
+The screen should contain:
+
+- Credential Vault title.
+- Short security explanation.
+- Saved credentials list.
+- Website/domain label.
+- Username identifier.
+- Last updated information where appropriate.
+- Add Credential button.
+- Edit Credential action.
+- Delete Credential action.
+- Vault lock/unlock status.
+
+Do not display passwords in the credentials list.
+
+Passwords must be masked by default.
+
+3.2 Add credential flow
+
+When the user selects Add Credential:
+
+Show a secure form containing:
+
+- Website URL or origin.
+- Username.
+- Password.
+- Optional credential label.
+
+The user must manually enter the credentials or use an explicitly authorized user-controlled input method.
+
+Validate the website URL.
+
+Normalize and store the canonical HTTP(S) origin.
+
+Reject unsupported or opaque origins.
+
+Do not accept arbitrary JavaScript URLs, file URLs, data URLs, or other non-web schemes.
+
+Before saving, clearly explain that the credentials will be stored locally in the encrypted vault.
+
+The user must explicitly confirm saving.
+
+3.3 Edit and delete
+
+Allow users to update or delete their saved credentials.
+
+Require appropriate vault authentication before revealing or modifying sensitive data.
+
+Deletion must remove the encrypted credential record.
+
+Do not leave plaintext copies in application caches, temporary files, logs, or workflow records.
+
+Show a confirmation before permanent deletion.
+
+3.4 Empty and error states
+
+Implement clear states for:
+
+- No saved credentials.
+- Vault locked.
+- Authentication required.
+- Authentication cancelled.
+- Encryption failure.
+- Decryption failure.
+- Invalid website origin.
+- Credential deleted.
+- Vault unavailable.
+
+Do not expose sensitive technical information in user-facing errors.
+
+---
+
+PART 4 — CREDENTIAL REFERENCES IN AUTOMATION WORKFLOWS
+
+Integrate the vault with the existing automation workflow system.
+
+4.1 Workflow step model
+
+Introduce a secure credential reference mechanism.
+
+For example, a workflow may contain:
+
+- Action: Fill credential.
+- Credential reference ID.
+- Target field locator.
+- Field role: username or password.
+- Expected website origin.
+
+This is a conceptual example. Adapt it to the existing AutomationStep model.
+
+The workflow must reference a saved credential rather than contain its actual value.
+
+4.2 Recorder behavior
+
+Preserve Phase 4A protections.
+
+When recording a password field:
+
+- Detect the password field.
+- Record its locator and field role.
+- Never capture its value.
+- Never capture masked bullet characters as a substitute value.
+- Never place the password into recorder memory or event payloads.
+- Never create a credential automatically.
+
+If a password field is detected, the HUD may show that the field requires a saved credential.
+
+The user should be able to associate a saved credential later.
+
+Do not automatically associate credentials based only on a similar domain or field name.
+
+4.3 Workflow editor
+
+When editing a workflow that contains an authentication field, provide an option to:
+
+- Select an existing saved credential.
+- Open the credential vault and create a new one.
+- Leave the credential unassigned.
+
+The selection must be explicit.
+
+Display only safe credential metadata, such as the website and username identifier.
+
+Never display the stored password.
+
+If the selected credential does not match the workflow origin, show a warning and prevent unsafe automatic use.
+
+---
+
+PART 5 — SECURE CREDENTIAL REPLAY
+
+This is the most important integration requirement.
+
+When replay reaches a step that requires a credential:
+
+1. Confirm the workflow is still running in its authorized tab.
+2. Confirm the current WebView instance is the expected instance.
+3. Confirm the current live page origin matches the credential's authorized origin.
+4. Confirm the target field is still valid.
+5. Confirm the credential reference exists.
+6. Confirm the user has authorized credential use.
+7. Request vault authentication if required by the security policy.
+8. Decrypt the credential only when needed.
+9. Fill the intended field.
+10. Verify that the intended field received the value without reading the secret back into native code.
+11. Clear transient references as soon as practical.
+12. Continue execution only after successful verification.
+
+5.1 Explicit user authorization
+
+Credential use must never happen silently on the first attempt.
+
+Before using a saved credential, the user must explicitly authorize the operation.
+
+The authorization UI should identify:
+
+- The website origin.
+- The selected saved credential.
+- The workflow that requested it.
+- The action about to be performed.
+
+Allow the user to cancel.
+
+Do not automatically submit the form after filling credentials unless the workflow explicitly contains a submission step and the user has authorized that action.
+
+For high-impact actions such as login submission, payment, account changes, or irreversible operations, require appropriate confirmation.
+
+5.2 Origin security
+
+Reuse the canonical-origin security implementation from Phase 4A.
+
+Do not implement a weaker second origin-validation system.
+
+Credential use must be restricted to the exact authorized origin.
+
+Consider these examples:
+
+- https://example.com
+- http://example.com
+- https://login.example.com
+- https://example.com:8443
+- https://example-security.com
+
+These are not interchangeable origins.
+
+Do not treat subdomains, lookalike domains, different ports, different schemes, or redirects as automatically trusted.
+
+If a redirect changes the origin, stop credential filling and require a new explicit authorization.
+
+5.3 Safe field interaction
+
+Use the existing deterministic locator and interaction engine.
+
+Do not use unsafe selector fallbacks.
+
+Before filling:
+
+- Verify the field exists.
+- Verify the field is visible and interactable.
+- Verify its type and role.
+- Verify it is the intended username or password field.
+- Ensure the locator is not ambiguous.
+- Avoid filling hidden or unrelated password fields.
+
+Use browser-compatible interaction events.
+
+After filling, verify success without retrieving the secret value into native code.
+
+If verification fails, stop safely and report a non-sensitive error.
+
+Do not blindly retry credential filling.
+
+5.4 JavaScript bridge security
+
+Inspect the existing JavaScript bridge before integrating credential filling.
+
+The bridge must not expose a general-purpose method that allows arbitrary JavaScript to retrieve saved credentials.
+
+Do not expose vault decryption APIs to page JavaScript.
+
+Do not create global JavaScript variables containing credentials.
+
+Do not persist credentials in the DOM beyond the intended field value.
+
+Minimize the time secrets exist in JavaScript and native memory.
+
+Do not log JavaScript arguments containing credentials.
+
+Use a narrowly scoped, one-time credential-fill mechanism tied to the active workflow, authorized tab, WebView instance, origin, and target field.
+
+The credential value must never be returned from JavaScript to native code.
+
+Do not allow another tab or page to reuse the authorization.
+
+---
+
+PART 6 — EXECUTION FAILURE AND RECOVERY
+
+Handle these cases safely:
+
+- Credential reference no longer exists.
+- User deletes a credential while a workflow is saved.
+- Vault is locked.
+- User cancels authentication.
+- Biometric authentication fails.
+- Device credential authentication fails.
+- Encryption key is invalidated.
+- Decryption fails.
+- Website origin changes.
+- Redirect occurs.
+- Target field disappears.
+- Target field becomes hidden.
+- Locator becomes ambiguous.
+- Page navigates during credential filling.
+- WebView is replaced.
+- Tab closes.
+- Workflow is cancelled.
+- App enters the background.
+- Device locks during execution.
+
+For each case:
+
+- Stop the affected credential operation.
+- Prevent accidental credential disclosure.
+- Do not continue to a potentially unsafe step.
+- Keep workflow state consistent.
+- Release transient references.
+- Show a clear, non-sensitive status.
+- Allow safe recovery or user intervention.
+
+Never put the plaintext password in execution history.
+
+---
+
+PART 7 — EXPORT AND IMPORT SECURITY
+
+Inspect the current workflow JSON export/import system.
+
+The export format must never contain:
+
+- Plaintext passwords.
+- Decrypted credential payloads.
+- Encryption keys.
+- Authentication tokens.
+- Temporary secret values.
+
+Exports may contain opaque credential reference IDs only if doing so is safe and useful.
+
+Imported workflows must not be trusted automatically.
+
+Validate:
+
+- Workflow structure.
+- Credential references.
+- Locator data.
+- Origin bindings.
+- Action types.
+- Unsupported or malformed fields.
+
+If an imported workflow references a credential that does not exist locally, mark that credential step as unassigned.
+
+Never attempt to recover credentials from an imported workflow.
+
+Do not overwrite existing credentials automatically during import.
+
+---
+
+PART 8 — PRIVACY AND MEMORY HYGIENE
+
+Implement practical protections against accidental secret retention.
+
+Requirements:
+
+- Never log credential values.
+- Never include credentials in exception messages.
+- Never include credentials in execution history.
+- Never include credentials in analytics.
+- Never include credentials in crash reports.
+- Never include credentials in workflow exports.
+- Never include credentials in screenshots or debugging overlays.
+- Never place passwords in clipboard automatically.
+- Never persist plaintext passwords in DataStore or SharedPreferences.
+- Avoid writing decrypted credentials to temporary files.
+- Avoid unnecessary copies of secret strings.
+- Clear mutable buffers and references when possible.
+- Do not claim that garbage collection securely erases immutable strings.
+
+Explain any unavoidable transient exposure in the implementation report.
+
+Do not make unrealistic claims that Android or Kotlin can guarantee perfect erasure of all in-memory secret copies.
+
+---
+
+PART 9 — TESTING REQUIREMENTS
+
+Create meaningful unit and integration tests.
+
+Do not merely write tests that confirm mocked methods were called.
+
+Test actual security boundaries and failure handling.
+
+9.1 Encryption tests
+
+Test:
+
+- Key generation.
+- Successful encryption.
+- Successful decryption.
+- Different ciphertext for repeated encryption of the same plaintext due to fresh IVs.
+- Invalid ciphertext.
+- Modified authentication tag.
+- Invalid IV.
+- Missing key.
+- Key invalidation handling.
+- Encryption failure.
+- Decryption failure.
+
+Never use real user credentials in tests.
+
+9.2 Database tests
+
+Test:
+
+- Credential insertion.
+- Credential retrieval.
+- Credential update.
+- Credential deletion.
+- Duplicate handling.
+- Transactional behavior.
+- Workflow reference integrity.
+- Missing credential references.
+- Database migration.
+- No plaintext password columns.
+
+9.3 Origin security tests
+
+Test:
+
+- Exact-origin match.
+- HTTP versus HTTPS.
+- Different ports.
+- Subdomains.
+- Trailing-dot normalization.
+- Hostname case normalization.
+- Lookalike domains.
+- Redirects.
+- Opaque origins.
+- Unsupported URL schemes.
+
+Reuse Phase 4A canonical-origin behavior.
+
+9.4 Workflow tests
+
+Test:
+
+- Recording a password field never captures its value.
+- Credential references are stored instead of passwords.
+- Workflow serialization never includes secrets.
+- Workflow export never includes secrets.
+- Imported missing credential references remain unassigned.
+- Deleted credentials are handled safely.
+- Incorrect-origin credential use is rejected.
+
+9.5 Replay tests
+
+Test:
+
+- Correct credential selection.
+- Explicit authorization.
+- Authentication cancellation.
+- Successful authorized fill.
+- Wrong-origin rejection.
+- Wrong-tab rejection.
+- Replaced-WebView rejection.
+- Target-field disappearance.
+- Hidden field rejection.
+- Ambiguous locator rejection.
+- Redirect during filling.
+- Cancellation during filling.
+- No secret returned from JavaScript.
+- No secret in logs or execution history.
+
+9.6 Lifecycle tests
+
+Test:
+
+- Tab closure.
+- WebView replacement.
+- Workflow cancellation.
+- App backgrounding.
+- Device lock.
+- Authentication timeout.
+- Vault lock.
+- Session cleanup.
+
+9.7 Regression tests
+
+Run all existing tests, including Phase 1–4A tests.
+
+Do not remove, disable, skip, or weaken existing tests to obtain a passing result.
+
+---
+
+PART 10 — BUILD AND VERIFICATION
+
+After implementation:
+
+1. Run the complete unit test suite.
+2. Run relevant Robolectric and instrumentation tests available in the project.
+3. Run the Android debug build.
+4. Inspect compiler warnings and errors.
+5. Inspect database migrations.
+6. Inspect exported workflow JSON.
+7. Search the source for accidental plaintext credential persistence.
+8. Search logs and error-handling paths for credential leakage.
+9. Verify existing recording and replay behavior.
+10. Verify that existing browser functionality remains unchanged.
+
+Use the actual Gradle tasks supported by the project.
+
+Do not claim success unless the command actually completed successfully.
+
+If a test or build is cancelled or times out, report it as incomplete rather than failed or passed.
+
+---
+
+IMPLEMENTATION STRATEGY
+
+Implement Phase 4B in controlled stages, but complete the entire phase.
+
+Stage 1 — Architecture and security design
+
+- Inspect the existing code.
+- Document the current automation architecture.
+- Design the credential vault.
+- Design encryption and key lifecycle.
+- Design credential references.
+- Identify migration requirements.
+- Identify security risks.
+
+Stage 2 — Secure vault implementation
+
+- Implement Keystore-backed encryption.
+- Implement encrypted credential persistence.
+- Implement vault repository and manager.
+- Implement authentication handling.
+- Implement safe lifecycle and error handling.
+
+Stage 3 — Credential management UI
+
+- Add the vault screen.
+- Add credential creation.
+- Add editing and deletion.
+- Add locked and empty states.
+- Preserve Apex UI design.
+
+Stage 4 — Workflow integration
+
+- Add credential references.
+- Update workflow editor.
+- Preserve password-recording protections.
+- Update serialization and import/export safely.
+
+Stage 5 — Replay integration
+
+- Add explicit credential authorization.
+- Validate origin, tab, WebView, session, and target.
+- Implement secure one-time filling.
+- Verify success without retrieving secrets.
+- Implement safe failure and cancellation.
+
+Stage 6 — Testing and final verification
+
+- Add security tests.
+- Add database tests.
+- Add replay tests.
+- Run all regression tests.
+- Build the debug APK.
+- Produce a final implementation report.
+
+---
+
+STRICT SCOPE LIMITS
+
+This phase is specifically about secure, user-authorized credential storage and use.
+
+Do not implement:
+
+- CAPTCHA bypass.
+- MFA or OTP bypass.
+- Security-question bypass.
+- Credential harvesting.
+- Automatic password discovery.
+- Hidden credential extraction from websites.
+- Automatic account creation using credentials without user authorization.
+- Password sharing between users.
+- Cloud credential synchronization.
+- External AI credential processing.
+- Automatic form submission without the required authorization.
+
+CAPTCHA, MFA, and other security challenges must remain under human control.
+
+The user must remain in control of credential selection and use.
+
+---
+
+FINAL REPORT REQUIREMENTS
+
+When finished, provide a detailed report containing:
+
+1. Existing architecture inspected.
+2. New files created.
+3. Existing files modified.
+4. Database changes and migrations.
+5. Encryption design and Keystore configuration.
+6. Authentication implementation.
+7. Credential vault UI implementation.
+8. Workflow reference implementation.
+9. Recorder integration.
+10. Replay integration.
+11. Origin and tab security protections.
+12. Export/import security.
+13. Memory and logging protections.
+14. Tests added.
+15. Total tests passed, failed, skipped, and not executed.
+16. Actual Gradle commands executed.
+17. Actual debug build result.
+18. Known limitations and unresolved risks.
+19. Any migration or compatibility concerns.
+
+Clearly distinguish completed work from planned or partially implemented work.
+
+Do not report a feature as complete merely because its classes or UI have been created.
+
+A feature is complete only when its implementation, integration, and relevant tests have been verified.
+
+FINAL INSTRUCTION
+
+Begin by inspecting the current repository and the completed Phase 1–4A implementation.
+
+Do not restart completed work.
+
+Do not replace existing working architecture unnecessarily.
+
+Preserve all existing security protections.
+
+Implement Phase 4B as a secure extension of Apex Browser's existing automation engine.
+
+Prioritize security, data integrity, deterministic execution, user consent, and backward compatibility over implementation speed.

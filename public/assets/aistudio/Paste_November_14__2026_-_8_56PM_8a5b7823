@@ -1,0 +1,1456 @@
+APEX BROWSER — PHASE 4C
+
+Universal DOM Scanner & Advanced Web Element Discovery Engine
+
+PROJECT INFORMATION
+
+Project: Apex Browser
+Repository: https://github.com/alahmedali89/Apex-Browsers
+Platform: Android
+Language: Kotlin
+UI: Jetpack Compose + Material 3
+Web Rendering: Android WebView
+Database: Room
+Architecture: ViewModel + Repository
+
+Apex Browser contains a deterministic, locally operating browser automation engine.
+
+The objective is to make Apex capable of discovering and understanding a broad range of interactive website elements without depending on external AI APIs.
+
+The browser must be able to inspect complex websites, identify form controls, understand their roles and properties, and make those elements available to the existing automation recorder, workflow editor, and replay engine.
+
+---
+
+1. COMPLETED PHASES — MUST BE PRESERVED
+
+The following phases have already been implemented.
+
+Phase 1 — Database Integrity
+
+- Room database integrity.
+- Explicit database migrations.
+- Workflow and execution persistence.
+- Data integrity protections.
+
+Phase 2 — Automation Execution Safety
+
+- Deterministic automation execution.
+- Structured execution errors.
+- Bounded JavaScript evaluation.
+- Cancellation handling.
+- Duplicate execution prevention.
+
+Phase 3 — Navigation Synchronization
+
+- Per-tab navigation synchronization.
+- Navigation epoch tracking.
+- SPA navigation handling.
+- Redirect and navigation error handling.
+
+Phase 4A — Recording Isolation and Origin Security
+
+- Recording session ID.
+- Initiating tab binding.
+- Canonical origin binding.
+- WebView instance validation.
+- Live URL validation.
+- Monotonic event sequence validation.
+- Cross-origin recording isolation.
+- Recorder cleanup.
+- Password value exclusion.
+
+Phase 4B — Secure Credential Vault
+
+- Android Keystore-backed encryption.
+- AES-256-GCM encrypted credentials.
+- Separate credential vault database table.
+- Opaque credential references.
+- Explicit user authorization.
+- Two-tier authentication.
+- Origin-restricted credential replay.
+- Password recording prevention.
+- Export/import sanitization.
+- Credential lifecycle cleanup.
+
+These phases must remain intact.
+
+Do not remove, weaken, replace, or bypass any existing protections.
+
+---
+
+2. PHASE 4C PRIMARY OBJECTIVE
+
+Build a comprehensive Universal DOM Scanner.
+
+The scanner must discover interactive and potentially interactive website elements across different website structures and frameworks.
+
+It must support:
+
+1. Standard HTML form controls.
+2. Contenteditable elements.
+3. ARIA-based interactive controls.
+4. Custom dropdowns and listboxes.
+5. Date and time controls.
+6. Radio buttons and checkboxes.
+7. Select elements.
+8. Open Shadow DOM.
+9. Accessible same-origin iframes.
+10. Dynamically inserted elements.
+11. Long pages and large forms.
+12. Off-screen elements.
+13. Elements loaded after scrolling or user interaction.
+14. Elements with dynamically changing attributes.
+15. Modern JavaScript-generated interfaces.
+
+The scanner must work deterministically using browser APIs and locally executed JavaScript.
+
+No external AI API must be required.
+
+The scanner is a discovery system, not an automatic interaction or security-bypass system.
+
+---
+
+3. INSPECT THE EXISTING ARCHITECTURE FIRST
+
+Before modifying code, inspect:
+
+- AutomationEngine.kt.
+- RetrieverEngine.kt, if still present.
+- AutomationModels.kt.
+- AutomationJsBridge and related bridge classes.
+- WebViewViewport.kt.
+- BrowserViewModel.kt.
+- AutomationHudSheet.kt.
+- AutomationDetailsScreen.kt.
+- Automation workflow repository.
+- Existing DOM scanning JavaScript.
+- Existing element locator implementation.
+- Existing recorder and replay integration.
+- Phase 4A recording isolation.
+- Phase 4B credential protections.
+- Existing tests.
+
+Identify:
+
+- Current scanner implementation.
+- Existing element data models.
+- Existing locator strategies.
+- Existing scan callbacks.
+- Existing scan lifecycle.
+- Existing caching or deduplication.
+- Existing navigation synchronization.
+
+Do not create duplicate scanners or duplicate element models.
+
+Extend the existing architecture.
+
+If the current scanner is incomplete, refactor only the components necessary to implement Phase 4C.
+
+Do not redesign unrelated browser screens.
+
+Do not change the Apex visual design system.
+
+---
+
+4. UNIVERSAL ELEMENT DISCOVERY
+
+Create or extend a centralized DOM discovery engine.
+
+The scanner must understand different types of interactive elements.
+
+4.1 Standard HTML elements
+
+Discover at minimum:
+
+Input elements
+
+- text
+- email
+- password
+- number
+- tel
+- search
+- url
+- date
+- datetime-local
+- month
+- week
+- time
+- checkbox
+- radio
+- range
+- color
+- file
+- hidden
+
+Other form elements
+
+- textarea
+- select
+- option
+- button
+- input[type=submit]
+- input[type=reset]
+- input[type=button]
+- form
+
+Interactive elements
+
+- a[href]
+- button
+- summary
+- details
+- elements with tabindex
+- elements with interactive roles
+
+Do not treat every HTML element as an actionable control.
+
+Use semantic classification to distinguish interactive elements from ordinary page content.
+
+4.2 Contenteditable support
+
+Discover:
+
+- contenteditable="true"
+- contenteditable=""
+- contenteditable="plaintext-only"
+- inherited contenteditable regions where applicable.
+
+Record:
+
+- Editable status.
+- Element tag.
+- Accessible name.
+- Relevant attributes.
+- Stable locator information.
+- Whether the element is currently enabled.
+
+Do not confuse ordinary text containers with editable elements.
+
+4.3 ARIA controls
+
+Discover elements using relevant ARIA roles and attributes.
+
+Support at minimum:
+
+- textbox
+- searchbox
+- combobox
+- listbox
+- option
+- checkbox
+- radio
+- switch
+- button
+- link
+- slider
+- spinbutton
+- menu
+- menuitem
+- tab
+- tree
+- treeitem
+- grid
+- gridcell
+- dialog
+
+Inspect:
+
+- role
+- aria-label
+- aria-labelledby
+- aria-describedby
+- aria-controls
+- aria-expanded
+- aria-selected
+- aria-checked
+- aria-disabled
+- aria-required
+- aria-haspopup
+- aria-autocomplete
+- aria-valuemin
+- aria-valuemax
+- aria-valuenow
+
+ARIA roles must be interpreted semantically.
+
+Do not assume that an element with an ARIA role behaves exactly like its native HTML equivalent.
+
+Preserve enough information for the automation engine to select the correct interaction strategy later.
+
+4.4 Custom dropdowns
+
+Discover custom dropdown controls implemented with:
+
+- div
+- span
+- button
+- role="combobox"
+- role="listbox"
+- role="option"
+- aria-haspopup
+- aria-expanded
+- aria-controls
+
+Record the relationship between a dropdown trigger and its controlled list when discoverable.
+
+Do not automatically open every dropdown during passive scanning.
+
+The scanner must distinguish:
+
+- Native select.
+- Custom combobox.
+- Custom listbox.
+- Menu.
+- Autocomplete control.
+
+4.5 Radio buttons and checkboxes
+
+Discover native and ARIA-based controls.
+
+For native inputs, capture:
+
+- checked state.
+- disabled state.
+- name.
+- value, where safe.
+- associated label.
+- group information.
+
+For ARIA controls, capture:
+
+- aria-checked.
+- role.
+- accessible name.
+- disabled state.
+- group relationship when available.
+
+Do not record sensitive values.
+
+For password fields, capture only structural metadata.
+
+---
+
+5. DATE AND TIME INPUT SUPPORT
+
+Date and time fields require special classification.
+
+Support:
+
+- input[type=date]
+- input[type=datetime-local]
+- input[type=time]
+- input[type=month]
+- input[type=week]
+- date-related ARIA controls
+- custom date pickers
+- custom time pickers
+- calendar grid interfaces
+
+Record:
+
+- Control type.
+- Input format.
+- min.
+- max.
+- step.
+- required state.
+- Disabled state.
+- Accessible name.
+- Associated label.
+- Current value only where safe and appropriate.
+
+For custom date pickers, discover:
+
+- Calendar trigger.
+- Calendar dialog.
+- Month navigation.
+- Year navigation.
+- Day buttons.
+- Selected date.
+- Disabled dates.
+- Time selection controls.
+
+Do not automatically open calendar dialogs during passive scanning.
+
+Dynamic calendar contents may be scanned when the user or an explicitly authorized automation action opens the calendar.
+
+Do not assume all date pickers use the same DOM structure.
+
+---
+
+6. OPEN SHADOW DOM SUPPORT
+
+Modern websites frequently use Web Components.
+
+Implement recursive discovery through accessible open Shadow DOM.
+
+Requirements:
+
+1. Detect elements with shadowRoot.
+2. Traverse open shadow roots recursively.
+3. Discover interactive descendants.
+4. Preserve host-to-shadow relationships.
+5. Generate locators that can identify the element within its shadow host chain.
+6. Support nested open Shadow DOM.
+7. Deduplicate elements discovered through multiple paths.
+
+A locator may need to represent a chain such as:
+
+Document
+→ Shadow Host A
+→ Shadow Root A
+→ Shadow Host B
+→ Shadow Root B
+→ Target Element
+
+Do not assume a normal document.querySelector() can reach elements inside Shadow DOM.
+
+Do not claim support for closed Shadow DOM.
+
+Closed Shadow DOM must be reported as inaccessible when its contents cannot be inspected through supported browser APIs.
+
+Do not attempt to bypass encapsulation.
+
+---
+
+7. SAME-ORIGIN IFRAME SUPPORT
+
+Implement recursive scanning of accessible same-origin iframes.
+
+Requirements:
+
+- Discover iframe elements.
+- Inspect accessible iframe documents.
+- Recursively scan same-origin iframe content.
+- Maintain the iframe hierarchy.
+- Preserve frame URL and origin metadata.
+- Generate frame-aware locators.
+- Deduplicate results.
+- Handle unloaded frames.
+- Handle navigation during scanning.
+- Handle detached iframe documents.
+- Handle cross-origin access restrictions safely.
+
+For cross-origin iframes:
+
+- Detect the iframe.
+- Record that it contains inaccessible content.
+- Do not attempt to bypass the same-origin policy.
+- Do not inject unauthorized scripts into cross-origin frames.
+
+All discovered iframe content must remain subject to the existing origin and session security architecture.
+
+Important credential rule
+
+Phase 4B credential filling must not be weakened.
+
+Credential filling must remain restricted to the exact authorized top-level origin and approved target context.
+
+Do not use iframe scanning to bypass credential origin restrictions.
+
+---
+
+8. DYNAMIC DOM DETECTION
+
+Modern websites frequently create, replace, hide, or modify elements after initial page loading.
+
+Implement dynamic discovery.
+
+Use MutationObserver where appropriate.
+
+Observe relevant changes, including:
+
+- Child element insertion.
+- Child element removal.
+- Attribute changes.
+- Role changes.
+- Visibility-related changes.
+- Disabled state changes.
+- Newly inserted forms.
+- Newly inserted controls.
+- Shadow host insertion.
+- Relevant iframe insertion.
+
+Avoid rescanning the entire page for every small DOM mutation.
+
+Implement:
+
+- Debouncing.
+- Batched scanning.
+- Mutation filtering.
+- Deduplication.
+- Incremental updates.
+- Bounded queues.
+- Cancellation.
+- Observer cleanup.
+
+Avoid observing irrelevant attributes or generating an infinite mutation loop.
+
+The scanner must not modify the page merely to observe it.
+
+Dynamic element lifecycle
+
+Elements may be:
+
+- Added.
+- Removed.
+- Replaced.
+- Hidden.
+- Shown.
+- Disabled.
+- Re-enabled.
+- Moved to another container.
+
+Track element identity carefully.
+
+A removed element must not remain incorrectly marked as a valid current target.
+
+If a locator becomes stale, mark it stale and require rediscovery.
+
+Do not silently reuse a detached element reference.
+
+---
+
+9. LONG PAGES AND OFF-SCREEN ELEMENTS
+
+The scanner must discover elements beyond the currently visible viewport.
+
+It must not restrict discovery to elements visible on the screen.
+
+Support:
+
+- Long forms.
+- Long pages.
+- Lazy-loaded content.
+- Elements below the fold.
+- Nested scroll containers.
+- Dynamically expanded sections.
+- Elements revealed after scrolling.
+
+Passive scanning
+
+First, perform a non-destructive DOM inspection of the currently loaded document.
+
+Do not automatically scroll the page during passive scanning.
+
+Do not change the user's scroll position.
+
+Do not click controls simply to reveal hidden content.
+
+Explicit extended scanning
+
+Where additional content is loaded only after scrolling, support an optional extended scan.
+
+The extended scan must:
+
+1. Save the current scroll position.
+2. Identify relevant scroll containers.
+3. Move through the page in bounded increments only when authorized.
+4. Allow lazy-loaded content to appear.
+5. Discover newly inserted elements.
+6. Avoid clicking or submitting controls.
+7. Restore the user's original scroll position.
+8. Stop when the scan reaches its configured limit.
+9. Support cancellation.
+10. Clean up temporary observers and listeners.
+
+Never run an unbounded scroll loop.
+
+Do not automatically expand every accordion, menu, or dialog.
+
+---
+
+10. ACCESSIBLE NAME AND LABEL RESOLUTION
+
+Implement a deterministic accessible-name resolver.
+
+Use a sensible precedence order based on supported browser semantics.
+
+Consider:
+
+1. aria-labelledby.
+2. aria-label.
+3. Associated label elements.
+4. Explicit labels using for/id.
+5. Wrapping labels.
+6. Native title attribute.
+7. Placeholder, as a fallback.
+8. Relevant button or link text.
+9. Other safe semantic text.
+
+Avoid using arbitrary parent innerText as the primary accessible name.
+
+Avoid capturing excessively long page text.
+
+Handle:
+
+- Multiple labels.
+- Missing labels.
+- Empty labels.
+- Duplicate IDs.
+- Hidden labels.
+- Nested controls.
+- Whitespace normalization.
+- Unicode text.
+
+Store the accessible name separately from the raw element text.
+
+---
+
+11. FIELD GROUPING AND FORM STRUCTURE
+
+The scanner must understand form relationships.
+
+Discover:
+
+- Form boundaries.
+- Form IDs.
+- Form names.
+- Fieldsets.
+- Legends.
+- Labels.
+- Required fields.
+- Optional fields.
+- Radio groups.
+- Checkbox groups.
+- Repeated field groups.
+- Multi-step form sections where structurally identifiable.
+
+Associate controls with their correct form.
+
+Support controls associated through the HTML form attribute, even when they are not physically nested inside the form.
+
+Generate stable group identifiers where possible.
+
+Do not assume that every form has a form element.
+
+Some modern websites build forms entirely from custom components.
+
+Preserve enough structural information to group those controls logically.
+
+---
+
+12. UNIVERSAL ELEMENT DATA MODEL
+
+Inspect the existing models before extending them.
+
+Create or extend a normalized element descriptor.
+
+The descriptor should support fields conceptually similar to:
+
+- elementId
+- scanSessionId
+- tabId
+- documentId
+- framePath
+- shadowHostPath
+- tagName
+- inputType
+- role
+- accessibleName
+- label
+- placeholder
+- name
+- id
+- safeValue
+- checked
+- selected
+- required
+- disabled
+- readonly
+- editable
+- visible
+- interactable
+- contentEditable
+- autocomplete
+- ariaAttributes
+- formGroupId
+- locatorCandidates
+- locatorConfidence
+- discoverySource
+- discoveredAt
+- lastUpdatedAt
+- stale
+
+These are conceptual fields, not a requirement to add every field if the existing model already provides equivalent functionality.
+
+Use versioned and structured serialization if the project already uses that pattern.
+
+Avoid unnecessarily large payloads.
+
+Do not store full DOM trees.
+
+Do not store large innerHTML strings.
+
+Do not store page source merely to identify an element.
+
+---
+
+13. PRIVACY AND SENSITIVE ELEMENT HANDLING
+
+The scanner must preserve all Phase 4B protections.
+
+Password fields
+
+For input[type=password]:
+
+- Detect the element.
+- Record its type.
+- Record its accessible label.
+- Record its locator.
+- Record its origin and structural context.
+- Never capture its value.
+- Never serialize its value.
+- Never include it in logs.
+- Never include it in screenshots or diagnostic output.
+
+Password fields should be classified as credential-capable controls.
+
+They must not automatically create vault entries.
+
+Other sensitive fields
+
+Handle cautiously:
+
+- Credit card fields.
+- CVV fields.
+- Bank account fields.
+- Payment-related controls.
+- OTP fields.
+- One-time authentication fields.
+- Security-question fields.
+- Personal identification fields.
+
+The scanner may discover their structural metadata, but must not automatically collect or persist sensitive values.
+
+Do not bypass CAPTCHA, MFA, authentication challenges, or website security mechanisms.
+
+Do not automatically submit sensitive forms.
+
+---
+
+14. LOCATOR GENERATION AND QUALITY
+
+The scanner must provide useful locator candidates to the existing deterministic automation engine.
+
+Support appropriate strategies, including:
+
+1. Stable unique ID.
+2. Stable name attribute.
+3. Associated label.
+4. ARIA role and accessible name.
+5. Stable data attributes.
+6. Scoped CSS selectors.
+7. Form-relative locators.
+8. Shadow DOM locator chains.
+9. Frame-aware locator paths.
+
+Do not generate unsafe selectors based on:
+
+- Random framework-generated IDs.
+- Unstable class hashes.
+- Arbitrary DOM positions.
+- Long nth-child chains.
+- Temporary visual positions.
+
+Each locator candidate should include:
+
+- Strategy.
+- Selector or structured path.
+- Scope.
+- Confidence.
+- Uniqueness result.
+- Stability assessment.
+
+Before accepting a locator, check whether it uniquely identifies the intended element within its proper scope.
+
+If multiple elements match, mark the locator ambiguous.
+
+Do not silently select the first match.
+
+Locator security
+
+A locator must never override:
+
+- Session binding.
+- Tab binding.
+- Origin restrictions.
+- WebView instance validation.
+- Credential authorization.
+
+Discovery does not grant permission to interact with an element.
+
+---
+
+15. SCANNER EXECUTION ARCHITECTURE
+
+Keep the scanner independent of the UI layer.
+
+The UI must not directly implement DOM traversal.
+
+Use a clear separation between:
+
+- JavaScript DOM discovery.
+- Native bridge communication.
+- Kotlin scanner coordinator.
+- Element normalization.
+- Locator generation.
+- Scan result storage or delivery.
+- HUD presentation.
+
+Reuse the existing JavaScript bridge architecture where possible.
+
+Session isolation
+
+Every scan must have an identifiable scan session.
+
+Bind scanning to:
+
+- Scan session ID.
+- Initiating tab ID.
+- Expected WebView instance.
+- Current document/navigation context.
+- Canonical origin where applicable.
+
+Validate incoming scanner callbacks.
+
+Ignore stale callbacks.
+
+Prevent events from one tab from entering another tab's scan results.
+
+Handle navigation and WebView replacement safely.
+
+Reuse the existing Phase 4A isolation principles.
+
+JavaScript bridge
+
+The bridge must:
+
+- Accept structured scan results.
+- Validate session ownership.
+- Validate tab ownership.
+- Reject stale callbacks.
+- Handle malformed JSON safely.
+- Enforce payload size limits.
+- Avoid logging sensitive data.
+- Support scan cancellation.
+- Support observer cleanup.
+
+Do not expose unrestricted native functionality to page JavaScript.
+
+---
+
+16. SCAN PERFORMANCE AND RESOURCE MANAGEMENT
+
+The scanner must work on ordinary Android devices, not just desktop browsers.
+
+Avoid excessive CPU and memory use.
+
+Implement:
+
+- Batched DOM traversal.
+- Incremental results.
+- Debounced mutation handling.
+- Deduplication.
+- Bounded recursion.
+- Maximum element limits.
+- Maximum iframe depth.
+- Maximum Shadow DOM depth.
+- Cancellation support.
+- Time budgets.
+- Payload size limits.
+- Observer cleanup.
+
+Do not block the Android main thread with large JSON parsing or expensive native processing.
+
+Avoid repeatedly traversing the entire DOM.
+
+Avoid retaining DOM element references after the scan session ends.
+
+Use appropriate WebView threading rules.
+
+Suggested configurable limits
+
+Provide configurable internal limits for:
+
+- Maximum discovered elements.
+- Maximum iframe depth.
+- Maximum Shadow DOM depth.
+- Maximum scan duration.
+- Maximum result batch size.
+- Maximum serialized payload size.
+- Mutation processing frequency.
+
+Choose reasonable defaults after examining the existing project architecture.
+
+Do not hardcode arbitrary low limits that prevent normal long forms from being discovered.
+
+If a limit is reached, report a partial scan with a clear reason.
+
+Never silently report a partial scan as complete.
+
+---
+
+17. SCANNER RESULT STATES
+
+Implement structured scan states.
+
+At minimum:
+
+- IDLE
+- INITIALIZING
+- SCANNING
+- PARTIAL
+- COMPLETED
+- CANCELLED
+- FAILED
+- DOCUMENT_CHANGED
+- WEBVIEW_REPLACED
+- SESSION_INVALIDATED
+
+The scanner should also report useful summary information:
+
+- Total discovered elements.
+- Forms found.
+- Input fields found.
+- Buttons found.
+- Links found.
+- ARIA controls found.
+- Contenteditable elements found.
+- Shadow DOM elements found.
+- Same-origin iframe elements found.
+- Inaccessible cross-origin frames.
+- Dynamic updates processed.
+- Stale elements.
+- Ambiguous locators.
+- Whether the result is complete or partial.
+
+Do not expose sensitive values in scan summaries.
+
+---
+
+18. AUTOMATION HUD INTEGRATION
+
+Integrate the universal scanner with the existing Automation HUD.
+
+Preserve the current Apex interface and Material 3 Expressive design.
+
+Do not redesign the entire HUD.
+
+The HUD should provide:
+
+Scan status
+
+Display:
+
+- Scanning.
+- Scan completed.
+- Partial scan.
+- Scan cancelled.
+- Scan failed.
+
+Element summary
+
+Show counts for:
+
+- Input fields.
+- Buttons.
+- Dropdowns.
+- Checkboxes.
+- Radio buttons.
+- Date/time controls.
+- Contenteditable controls.
+- ARIA controls.
+- Shadow DOM elements.
+- Same-origin iframe elements.
+
+Element inspection
+
+Allow users to inspect discovered elements.
+
+Display safe information:
+
+- Accessible name.
+- Element type.
+- Role.
+- Label.
+- Required state.
+- Disabled state.
+- Locator strategy.
+- Locator confidence.
+- Frame or Shadow DOM context.
+
+Never display passwords or other sensitive values.
+
+Interaction with existing automation
+
+Allow discovered elements to be used by:
+
+- Recorder.
+- Manual workflow editor.
+- Locator selection.
+- Workflow step configuration.
+
+Do not automatically execute actions simply because an element has been discovered.
+
+---
+
+19. RECORDER INTEGRATION
+
+The recorder must be able to use scanner discovery results.
+
+When a user records an interaction:
+
+1. Identify the interacted element.
+2. Match it against existing scanner results where possible.
+3. Reuse its structured descriptor and locator candidates.
+4. Refresh discovery if the descriptor is stale.
+5. Validate the current document and tab.
+6. Store only safe structural information.
+
+If an element was not discovered previously, the recorder may create a fresh descriptor for that element.
+
+Do not require a full-page scan before every recorded action.
+
+Maintain the existing Phase 4A session and origin protections.
+
+Maintain the existing Phase 4B password handling.
+
+---
+
+20. MANUAL INSTRUCTIONS INTEGRATION
+
+Manual workflows must benefit from the universal scanner.
+
+For example, when a user configures:
+
+"Select the country dropdown."
+
+The automation editor should be able to offer discovered elements matching relevant accessible names and roles.
+
+For instructions involving:
+
+- Email.
+- Username.
+- Password.
+- Date of birth.
+- Country.
+- Gender.
+- Radio buttons.
+- Checkboxes.
+- Search fields.
+- Dropdowns.
+- Editable text areas.
+
+Use scanner metadata to identify candidate controls.
+
+If multiple candidates match, require user selection or report ambiguity.
+
+Do not use arbitrary positional fallbacks.
+
+Do not add an external AI dependency.
+
+The scanner provides deterministic metadata; interpretation and execution remain separate responsibilities.
+
+---
+
+21. FAILURE HANDLING
+
+Handle all relevant failure cases.
+
+Examples:
+
+- Document not ready.
+- DOM unavailable.
+- JavaScript execution timeout.
+- Navigation during scanning.
+- SPA document changes.
+- Tab switch.
+- Tab closure.
+- WebView replacement.
+- Invalid scan session.
+- Malformed scanner result.
+- MutationObserver unavailable.
+- Shadow root inaccessible.
+- Cross-origin iframe.
+- Detached iframe.
+- Element removed during scanning.
+- Maximum depth reached.
+- Maximum element count reached.
+- Payload too large.
+- Scan cancellation.
+- Android lifecycle interruption.
+
+Failures must produce structured results.
+
+Do not crash the browser.
+
+Do not silently ignore security-related failures.
+
+Always clean up observers and temporary listeners.
+
+---
+
+22. SECURITY REQUIREMENTS
+
+These are non-negotiable:
+
+1. No external AI API.
+2. No automatic credential collection.
+3. No password value collection.
+4. No CAPTCHA bypass.
+5. No MFA bypass.
+6. No same-origin policy bypass.
+7. No closed Shadow DOM bypass.
+8. No unrestricted JavaScript bridge.
+9. No cross-tab scan-result leakage.
+10. No stale session acceptance.
+11. No unbounded scanning.
+12. No arbitrary element interaction during passive scanning.
+13. No automatic form submission.
+14. No weakening of Phase 4A or Phase 4B origin protections.
+15. No sensitive values in logs or serialized results.
+
+The scanner must discover elements without assuming permission to interact with them.
+
+---
+
+23. TESTING REQUIREMENTS
+
+Create meaningful tests for the complete scanner.
+
+Do not rely only on mocked tests.
+
+Use realistic HTML fixtures and the project's available WebView/Robolectric testing architecture.
+
+23.1 Standard HTML tests
+
+Test discovery of:
+
+- Text input.
+- Email input.
+- Password input.
+- Number input.
+- Telephone input.
+- Search input.
+- URL input.
+- Date input.
+- Date-time input.
+- Time input.
+- Month input.
+- Week input.
+- Textarea.
+- Select.
+- Option.
+- Checkbox.
+- Radio.
+- Buttons.
+- Links.
+- File inputs.
+- Hidden inputs.
+
+Verify that hidden inputs are classified correctly and are not presented as visible interactive controls.
+
+23.2 Contenteditable tests
+
+Test:
+
+- contenteditable=true.
+- contenteditable empty.
+- plaintext-only.
+- Nested editable regions.
+- Inherited editability.
+- Non-editable text containers.
+
+23.3 ARIA tests
+
+Test:
+
+- ARIA textbox.
+- Combobox.
+- Listbox.
+- Option.
+- Checkbox.
+- Radio.
+- Switch.
+- Button.
+- Slider.
+- Spinbutton.
+- Tab.
+- Menu.
+- Menuitem.
+- Dialog.
+- Tree.
+- Grid.
+
+Verify accessible-name resolution and state extraction.
+
+23.4 Shadow DOM tests
+
+Test:
+
+- Single open Shadow DOM.
+- Nested open Shadow DOM.
+- Multiple shadow hosts.
+- Interactive controls inside Shadow DOM.
+- Duplicate discovery prevention.
+- Closed Shadow DOM reporting.
+
+23.5 Iframe tests
+
+Test:
+
+- Same-origin iframe.
+- Nested same-origin iframe.
+- Unloaded iframe.
+- Detached iframe.
+- Cross-origin iframe.
+- Frame navigation during scanning.
+- Frame-aware locator generation.
+
+23.6 Dynamic DOM tests
+
+Test:
+
+- New element insertion.
+- Element removal.
+- Attribute changes.
+- Role changes.
+- Disabled state changes.
+- Hidden-to-visible transitions.
+- Replaced elements.
+- Mutation batching.
+- Deduplication.
+- Observer cleanup.
+
+23.7 Long-page tests
+
+Test:
+
+- Large forms.
+- Controls below the fold.
+- Nested scroll containers.
+- Lazy-loaded elements.
+- Extended scanning.
+- Scroll restoration.
+- Cancellation.
+- Scan limits.
+- Partial scan reporting.
+
+23.8 Locator tests
+
+Test:
+
+- Unique ID.
+- Unique name.
+- Label-based locator.
+- ARIA locator.
+- Scoped locator.
+- Shadow DOM locator.
+- Frame-aware locator.
+- Ambiguous locator.
+- Stale locator.
+- Detached element.
+
+23.9 Security tests
+
+Test:
+
+- Password values are never collected.
+- Sensitive values are excluded from results.
+- Cross-origin scan callbacks are rejected where required.
+- Wrong tab callbacks are rejected.
+- Stale session callbacks are rejected.
+- Replaced WebView callbacks are rejected.
+- Malformed JSON is handled safely.
+- Oversized payloads are rejected.
+- Navigation invalidates stale results.
+- Cancellation removes observers.
+- No sensitive values enter logs.
+
+23.10 Regression tests
+
+Run every existing test suite from Phases 1–4B.
+
+Do not remove, disable, skip, or weaken previous tests.
+
+The following must continue working:
+
+- Recording isolation.
+- Credential vault.
+- Authorized credential replay.
+- Origin binding.
+- Workflow export/import sanitization.
+- Execution cancellation.
+- Database migrations.
+- Existing browser tabs and navigation.
+- Existing bookmarks and downloads.
+- Existing browser UI.
+
+---
+
+24. IMPLEMENTATION STAGES
+
+Complete Phase 4C using the following controlled implementation sequence.
+
+Stage 1 — Existing scanner audit
+
+Inspect existing implementation.
+
+Identify missing capabilities.
+
+Document architecture and proposed changes.
+
+Stage 2 — Core universal discovery
+
+Implement standard HTML, form, ARIA, contenteditable, and accessible-name discovery.
+
+Stage 3 — Advanced DOM traversal
+
+Implement open Shadow DOM and accessible same-origin iframe discovery.
+
+Stage 4 — Dynamic DOM support
+
+Implement MutationObserver, incremental discovery, deduplication, stale-element detection, and cleanup.
+
+Stage 5 — Long-page discovery
+
+Implement off-screen discovery and optional bounded extended scanning with scroll restoration.
+
+Stage 6 — Locator integration
+
+Implement stable locator candidates and scoped locator validation.
+
+Integrate with the existing deterministic automation engine.
+
+Stage 7 — Native architecture integration
+
+Integrate scan sessions, JavaScript bridge validation, WebView lifecycle, tab isolation, and structured scan results.
+
+Stage 8 — HUD and workflow integration
+
+Expose scan results through the existing Automation HUD, recorder, and manual workflow editor.
+
+Stage 9 — Testing and regression verification
+
+Run the complete test suite and Android debug build.
+
+Fix all regressions introduced by Phase 4C.
+
+---
+
+25. PERFORMANCE ACCEPTANCE CRITERIA
+
+The scanner must:
+
+- Discover off-screen elements without scrolling during passive scans.
+- Avoid unnecessary full-document rescans.
+- Process dynamic changes incrementally.
+- Prevent duplicate element records.
+- Support nested open Shadow DOM within bounded limits.
+- Support accessible same-origin iframes.
+- Preserve scroll position during extended scanning.
+- Support cancellation.
+- Clean up observers and listeners.
+- Avoid excessive memory retention.
+- Report partial results when configured limits are reached.
+
+Performance must be tested on realistic large HTML fixtures.
+
+Do not claim universal website compatibility.
+
+Clearly report browser and WebView limitations.
+
+---
+
+26. FINAL VERIFICATION
+
+Run the actual Gradle tasks supported by the project.
+
+At minimum:
+
+- Complete unit test suite.
+- Relevant Robolectric tests.
+- Relevant instrumentation tests, if available.
+- Android debug build.
+
+Inspect:
+
+- Compiler warnings.
+- JavaScript syntax.
+- Bridge payloads.
+- Scan lifecycle cleanup.
+- Memory and performance behavior.
+- Database compatibility.
+- Phase 4A regressions.
+- Phase 4B regressions.
+
+Do not claim a test passed if it was cancelled, skipped, or never executed.
+
+Do not claim the Android debug build succeeded unless the actual build command completed successfully.
+
+---
+
+27. FINAL IMPLEMENTATION REPORT
+
+When finished, provide a detailed report containing:
+
+1. Existing scanner architecture inspected.
+2. Files created.
+3. Files modified.
+4. Standard HTML discovery capabilities.
+5. Contenteditable support.
+6. ARIA support.
+7. Date/time control support.
+8. Custom dropdown discovery.
+9. Shadow DOM support.
+10. Iframe support.
+11. Dynamic DOM implementation.
+12. Long-page and off-screen scanning.
+13. Accessible-name resolver.
+14. Locator generation and validation.
+15. Recorder integration.
+16. Manual workflow integration.
+17. HUD integration.
+18. Session and tab security.
+19. Sensitive-data protections.
+20. Performance limits and defaults.
+21. Tests added.
+22. Total tests executed.
+23. Tests passed.
+24. Tests failed.
+25. Tests skipped.
+26. Tests not executed.
+27. Actual Gradle commands.
+28. Actual debug build result.
+29. Known limitations.
+30. Remaining work for Phase 5.
+
+Clearly distinguish implemented, partially implemented, and unimplemented features.
+
+Do not claim support for closed Shadow DOM or inaccessible cross-origin iframe contents.
+
+Do not describe a partial scan as a complete scan.
+
+---
+
+FINAL INSTRUCTION
+
+Begin by inspecting the current Apex Browser repository.
+
+Phase 4A and Phase 4B are completed milestones. Do not restart them.
+
+Do not replace working components unnecessarily.
+
+Do not introduce duplicate automation engines or scanners.
+
+Implement Phase 4C as a comprehensive extension of the existing deterministic automation architecture.
+
+The final result should allow Apex Browser to discover and structurally understand a broad range of interactive elements across modern websites, including complex forms, dynamic interfaces, open Shadow DOM, accessible same-origin iframes, and long pages.
+
+Prioritize compatibility, deterministic discovery, performance, security, and backward compatibility.
+
+Do not begin Phase 5.
+
+Complete Phase 4C only.
